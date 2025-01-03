@@ -1,0 +1,1988 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     78456,       1980]
+NotebookOptionsPosition[     73319,       1910]
+NotebookOutlinePosition[     73906,       1931]
+CellTagsIndexPosition[     73863,       1928]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Title", ":", 
+    RowBox[{
+    "Omega", " ", "Matrix", " ", "Calculations", " ", "and", " ", 
+     "Properties", " ", "Author"}], ":", 
+    RowBox[{
+     RowBox[{"[", 
+      RowBox[{"Hirokaxzu", " ", "Maruyama"}], "]"}], " ", " ", 
+     RowBox[{"Date", ":", 
+      RowBox[{"January", " ", "2025", " ", "Version"}], ":", 
+      RowBox[{"1.0", " ", 
+       RowBox[{"Description", ":", 
+        RowBox[{
+        "This", " ", "code", " ", "demonstrates", " ", "the", " ", 
+         "fundamental", " ", "properties", " ", "of", " ", "\[Omega]", " ", 
+         "matrices"}], ":", 
+        RowBox[{
+        "1.", " ", "Construction", " ", "from", " ", "gamma", " ", "matrices",
+          " ", "2.", " ", "Verification", " ", "of", " ", "anticommutation", 
+         " ", "relations", " ", "3.", " ", "Calculation", " ", "of", " ", 
+         "invariant", " ", "quantities", " ", "4.", " ", "Comparison", " ", 
+         "with", " ", "standard", " ", "gamma", " ", "matrices", " ", 
+         "Theoretical", " ", 
+         RowBox[{"Background", ":", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"-", "\[Omega]"}], " ", "matrices", " ", "provide", " ", 
+            "alternative", " ", "representation", " ", "for", " ", "particle",
+             " ", "statistics"}], "-", 
+           RowBox[{"Important", " ", "for", " ", "fermion"}], "-", 
+           RowBox[{"boson", " ", "duality", " ", "theory"}], "-", 
+           RowBox[{
+           "Basis", " ", "for", " ", "extended", " ", "QED", " ", "and", " ", 
+            "QCD", " ", "calculations"}]}]}]}]}]}]}]}]}], "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Key", " ", 
+    RowBox[{"Operators", ":", 
+     RowBox[{
+      RowBox[{"\[Gamma]", "[", "\[Mu]", "]"}], "-", 
+      RowBox[{"Standard", " ", "gamma", " ", "matrices", " ", 
+       RowBox[{"(", 
+        RowBox[{"4", "x4"}], ")"}], " ", 
+       RowBox[{"\[Omega]", "[", "\[Mu]", "]"}]}], "-", 
+      RowBox[{
+      "Omega", " ", "matrices", " ", "derived", " ", "from", " ", "gamma", 
+       " ", "matrices", " ", 
+       RowBox[{"A", "[", "\[Mu]", "]"}]}], "-", 
+      RowBox[{
+      "Vector", " ", "potential", " ", "components", " ", "Matrix", " ", 
+       "Properties"}]}], ":", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", "Anticommutation"}], " ", "relations"}], "-", 
+      RowBox[{"Hermiticity", " ", "conditions"}], "-", 
+      RowBox[{"Trace", " ", "properties"}]}]}]}], "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Section", " ", "1"}], ":", 
+    RowBox[{
+    "Gamma", " ", "Matrix", " ", "Definitions", " ", "and", " ", "Properties",
+      " ", "Note"}], ":", 
+    RowBox[{"Standard", " ", "4", "x4", " ", "representation"}]}], "*)"}], 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Section", " ", "2"}], ":", 
+    RowBox[{
+    "Construction", " ", "of", " ", "Omega", " ", "Matrices", " ", "Note"}], 
+    ":", 
+    RowBox[{
+    "Linear", " ", "combinations", " ", "of", " ", "gamma", " ", 
+     "matrices"}]}], "*)"}], 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Section", " ", "3"}], ":", 
+    RowBox[{
+    "Verification", " ", "of", " ", "Anticommutation", " ", "Relations", " ", 
+     "Note"}], ":", 
+    RowBox[{
+    "Crucial", " ", "for", " ", "quantum", " ", "field", " ", "theory", " ", 
+     "applications"}]}], "*)"}], 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Section", " ", "4"}], ":", 
+    RowBox[{"Invariant", " ", "Quantities", " ", "Note"}], ":", 
+    RowBox[{
+    "Construction", " ", "of", " ", "physical", " ", "observables"}]}], 
+   "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Results", " ", 
+    RowBox[{"Summary", ":", 
+     RowBox[{
+     "1.", " ", "Anticommutation", " ", "relations", " ", "verified", " ", 
+      "for", " ", "both", " ", "\[Gamma]", " ", "and", " ", "\[Omega]", " ", 
+      "matrices", " ", "2.", " ", "\[Omega]", " ", "matrices", " ", "show", 
+      " ", "distinct", " ", "algebraic", " ", "properties", " ", "3.", " ", 
+      "Invariant", " ", "combinations", " ", "demonstrate", " ", "physical", 
+      " ", "relevance", " ", "4.", " ", "Results", " ", "consistent", " ", 
+      "with", " ", "theoretical", " ", "predictions"}]}]}], "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+    "Print", "[", 
+     "\"\<------------(*\[Gamma] matrix*)-------------------------\>\"", 
+     "]"}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Gamma]", "[", "0", "]"}], "=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"1", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "1", ",", "0", ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0", ",", 
+         RowBox[{"-", "1"}], ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0", ",", "0", ",", 
+         RowBox[{"-", "1"}]}], "}"}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Gamma]", "[", "1", "]"}], "=", 
+     RowBox[{"I", "*", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", "0", ",", "1"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", "1", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1", ",", "0", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "0", ",", "0", ",", "0"}], "}"}]}], "}"}]}]}], 
+    ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Gamma]", "[", "2", "]"}], "=", 
+     RowBox[{"I", "*", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", "0", ",", 
+          RowBox[{"-", "I"}]}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", "I", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", 
+          RowBox[{"-", "I"}], ",", "0", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"I", ",", "0", ",", "0", ",", "0"}], "}"}]}], "}"}]}]}], 
+    ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Gamma]", "[", "3", "]"}], "=", 
+     RowBox[{"I", "*", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", "1", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", "0", ",", 
+          RowBox[{"-", "1"}]}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", 
+          RowBox[{"-", "1"}], ",", "0", ",", "0"}], "}"}]}], "}"}]}]}], ";"}],
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<\[Gamma]0=\>\"", ",", 
+      RowBox[{"MatrixForm", "[", 
+       RowBox[{"\[Gamma]", "[", "0", "]"}], "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<\[Gamma]1=\>\"", ",", 
+      RowBox[{"MatrixForm", "[", 
+       RowBox[{"\[Gamma]", "[", "1", "]"}], "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<\[Gamma]2=\>\"", ",", 
+      RowBox[{"MatrixForm", "[", 
+       RowBox[{"\[Gamma]", "[", "2", "]"}], "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<\[Gamma]3=\>\"", ",", 
+      RowBox[{"MatrixForm", "[", 
+       RowBox[{"\[Gamma]", "[", "3", "]"}], "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", 
+     "\"\<--------------(*Anticommutation relation of \[Gamma] \
+matrix*)-----------------------\>\"", "]"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"For", "[", 
+     RowBox[{
+      RowBox[{"kh", "=", "0"}], ",", 
+      RowBox[{"kh", "\[LessEqual]", "3"}], ",", 
+      RowBox[{"kh", "++"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"ks1", "=", "0"}], ",", 
+        RowBox[{"ks1", "\[LessEqual]", "3"}], ",", 
+        RowBox[{"ks1", "++"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"yf", "=", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"\[Gamma]", "[", "kh", "]"}], ".", 
+            RowBox[{"\[Gamma]", "[", "ks1", "]"}]}], "+", 
+           RowBox[{
+            RowBox[{"\[Gamma]", "[", "ks1", "]"}], ".", 
+            RowBox[{"\[Gamma]", "[", "kh", "]"}]}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{
+          "\"\<\[Gamma]\>\"", ",", "kh", ",", "\"\<*\[Gamma]\>\"", ",", "ks1",
+            ",", "\"\<+\[Gamma]\>\"", ",", "ks1", ",", "\"\<*\[Gamma]\>\"", 
+           ",", "kh", ",", "\"\<=\>\"", ",", 
+           RowBox[{"MatrixForm", "[", "yf", "]"}]}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", 
+     "\"\<------------(*\[Omega] matrix*)-------------------------\>\"", 
+     "]"}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Omega]", "[", "0", "]"}], "=", 
+     RowBox[{
+      RowBox[{"\[Gamma]", "[", "0", "]"}], "+", 
+      RowBox[{"\[Gamma]", "[", "3", "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Omega]", "[", "1", "]"}], "=", 
+     RowBox[{"\[Gamma]", "[", "1", "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Omega]", "[", "2", "]"}], "=", 
+     RowBox[{"\[Gamma]", "[", "2", "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Omega]", "[", "3", "]"}], "=", 
+     RowBox[{
+      RowBox[{"\[Gamma]", "[", "3", "]"}], "+", 
+      RowBox[{"\[Gamma]", "[", "0", "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Omega]", "[", "0", "]"}], "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"\[Gamma]", "[", "0", "]"}], "+", 
+        RowBox[{"\[Gamma]", "[", "3", "]"}]}], ")"}], "/", "2"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Omega]", "[", "1", "]"}], "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"\[Gamma]", "[", "1", "]"}], "+", 
+        RowBox[{"\[Gamma]", "[", "1", "]"}]}], ")"}], "/", "2"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Omega]", "[", "2", "]"}], "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"\[Gamma]", "[", "2", "]"}], "+", 
+        RowBox[{"\[Gamma]", "[", "2", "]"}]}], ")"}], "/", "2"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Omega]", "[", "3", "]"}], "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"\[Gamma]", "[", "3", "]"}], "+", 
+        RowBox[{"\[Gamma]", "[", "0", "]"}]}], ")"}], "/", "2"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<\[Omega]0=\[Gamma]0+\[Gamma]3=\>\"", ",", 
+      RowBox[{"MatrixForm", "[", 
+       RowBox[{"\[Omega]", "[", "0", "]"}], "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<\[Omega]1=\[Gamma]1+\[Gamma]1=\>\"", ",", 
+      RowBox[{"MatrixForm", "[", 
+       RowBox[{"\[Omega]", "[", "1", "]"}], "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<\[Omega]2=\[Gamma]2+\[Gamma]2=\>\"", ",", 
+      RowBox[{"MatrixForm", "[", 
+       RowBox[{"\[Omega]", "[", "2", "]"}], "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<\[Omega]3=\[Gamma]3+\[Gamma]0=\>\"", ",", 
+      RowBox[{"MatrixForm", "[", 
+       RowBox[{"\[Omega]", "[", "3", "]"}], "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", 
+     "\"\<--------------(*Anticommutation relation of \[Omega] \
+matrix*)-----------------------\>\"", "]"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"For", "[", 
+     RowBox[{
+      RowBox[{"kh", "=", "0"}], ",", 
+      RowBox[{"kh", "\[LessEqual]", "3"}], ",", 
+      RowBox[{"kh", "++"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"ks1", "=", "0"}], ",", 
+        RowBox[{"ks1", "\[LessEqual]", "3"}], ",", 
+        RowBox[{"ks1", "++"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"yf", "=", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"\[Omega]", "[", "kh", "]"}], ".", 
+            RowBox[{"\[Omega]", "[", "ks1", "]"}]}], "+", 
+           RowBox[{
+            RowBox[{"\[Omega]", "[", "ks1", "]"}], ".", 
+            RowBox[{"\[Omega]", "[", "kh", "]"}]}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{
+          "\"\<\[Omega]\>\"", ",", "kh", ",", "\"\<*\[Omega]\>\"", ",", "ks1",
+            ",", "\"\<+\[Omega]\>\"", ",", "ks1", ",", "\"\<*\[Omega]\>\"", 
+           ",", "kh", ",", "\"\<=\>\"", ",", 
+           RowBox[{"MatrixForm", "[", "yf", "]"}]}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", 
+     "\"\<--------------(*Invariant using \[Omega] \
+matrix*)-----------------------\>\"", "]"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"s1", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"\[Omega]", "[", "0", "]"}], "*", "A0"}], "+", 
+      RowBox[{
+       RowBox[{"\[Omega]", "[", "1", "]"}], "*", "A1"}], "+", 
+      RowBox[{
+       RowBox[{"\[Omega]", "[", "2", "]"}], "*", "A2"}], "+", 
+      RowBox[{
+       RowBox[{"\[Omega]", "[", "3", "]"}], "*", "A3"}]}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"y", "=", 
+     RowBox[{"s1", ".", "s1"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{
+     "\"\<(\[Omega]0*A0+\[Omega]1*A1+\[Omega]2*A2+\[Omega]3*A3)*(\[Omega]0*A0+\
+\[Omega]1*A1+\[Omega]2*A2+\[Omega]3*A3)=\>\"", ",", 
+      RowBox[{
+       RowBox[{"Simplify", "[", 
+        RowBox[{"y", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], "]"}], "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+   "\n", "\n"}]}]], "Input",
+ CellChangeTimes->{{3.7785495833513775`*^9, 3.7785496072051764`*^9}, {
+   3.7785498850772667`*^9, 3.7785499054316907`*^9}, {3.7785499481091065`*^9, 
+   3.7785500322612953`*^9}, {3.7785502403057947`*^9, 3.778550295135496*^9}, 
+   3.7785503873949513`*^9, {3.7785504501926365`*^9, 3.778550532735695*^9}, {
+   3.778550621824051*^9, 3.778550635820719*^9}, 3.778550778552701*^9, {
+   3.77861816432771*^9, 3.778618176402997*^9}, {3.7786182084735117`*^9, 
+   3.778618215050085*^9}, {3.778788634760949*^9, 3.778788638806926*^9}, {
+   3.7787886737674065`*^9, 3.778788715992234*^9}, {3.778792463383953*^9, 
+   3.778792476177766*^9}, {3.778876616951968*^9, 3.778876662581834*^9}, {
+   3.778876706758876*^9, 3.778876763011262*^9}, {3.778878110145359*^9, 
+   3.778878154525525*^9}, {3.778888937754699*^9, 3.7788889422379875`*^9}, {
+   3.7788893110872993`*^9, 3.7788893143522034`*^9}, {3.7792437685928535`*^9, 
+   3.7792438080991874`*^9}, {3.77932524965722*^9, 3.779325272776617*^9}, {
+   3.7793363005965014`*^9, 3.7793363347445507`*^9}, {3.779741654464292*^9, 
+   3.7797416845041*^9}, {3.7800941166715784`*^9, 3.780094136604435*^9}, {
+   3.7800941696747656`*^9, 3.7800943749682503`*^9}, {3.9105466884632716`*^9, 
+   3.910546714831977*^9}, 3.9105467578062873`*^9, {3.9105468344681444`*^9, 
+   3.910546834733733*^9}, {3.9105472345552444`*^9, 3.9105473262365613`*^9}, 
+   3.9105473584222097`*^9, {3.944777095603985*^9, 3.944777095811167*^9}, 
+   3.9447772418214073`*^9, {3.944779296789213*^9, 3.9447793218666687`*^9}, 
+   3.9447793568208256`*^9},
+ CellLabel->"In[1]:=",ExpressionUUID->"2e19408e-ce9b-485d-a62f-9badac05af10"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"------------(*\[Gamma] \
+matrix*)-------------------------\"\>"], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798432989887*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"6c23ecb1-8bd7-034a-8631-be05bab6198e"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]0=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"1", "0", "0", "0"},
+       {"0", "1", "0", "0"},
+       {"0", "0", 
+        RowBox[{"-", "1"}], "0"},
+       {"0", "0", "0", 
+        RowBox[{"-", "1"}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["\[Gamma]0=", 
+   MatrixForm[{{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, -1, 0}, {0, 0, 0, -1}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984330058517`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"c9e6920c-2b01-5443-970e-62269bf619ba"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]1=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "\[ImaginaryI]"},
+       {"0", "0", "\[ImaginaryI]", "0"},
+       {"0", "\[ImaginaryI]", "0", "0"},
+       {"\[ImaginaryI]", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["\[Gamma]1=", 
+   MatrixForm[{{0, 0, 0, 
+      Complex[0, 1]}, {0, 0, 
+      Complex[0, 1], 0}, {0, 
+      Complex[0, 1], 0, 0}, {
+      Complex[0, 1], 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984330058517`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"8a40c004-9e01-ff45-bcac-dece631c7e75"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]2=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "1"},
+       {"0", "0", 
+        RowBox[{"-", "1"}], "0"},
+       {"0", "1", "0", "0"},
+       {
+        RowBox[{"-", "1"}], "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["\[Gamma]2=", 
+   MatrixForm[{{0, 0, 0, 1}, {0, 0, -1, 0}, {0, 1, 0, 0}, {-1, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984330219936`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"87f723f5-5ef2-cf48-af7e-73a1fb00cad7"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]3=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "\[ImaginaryI]", "0"},
+       {"0", "0", "0", 
+        RowBox[{"-", "\[ImaginaryI]"}]},
+       {"\[ImaginaryI]", "0", "0", "0"},
+       {"0", 
+        RowBox[{"-", "\[ImaginaryI]"}], "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["\[Gamma]3=", 
+   MatrixForm[{{0, 0, 
+      Complex[0, 1], 0}, {0, 0, 0, 
+      Complex[0, -1]}, {
+      Complex[0, 1], 0, 0, 0}, {0, 
+      Complex[0, -1], 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984330219936`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"78562240-d520-ab4a-8790-19fff6321df1"],
+
+Cell[BoxData["\<\"--------------(*Anticommutation relation of \[Gamma] \
+matrix*)-----------------------\"\>"], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984330219936`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"b19c1d68-0c5b-bd4f-a3e7-b75e852d390a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"2", "0", "0", "0"},
+       {"0", "2", "0", "0"},
+       {"0", "0", "2", "0"},
+       {"0", "0", "0", "2"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 0, "*\[Gamma]", 0, "+\[Gamma]", 0, "*\[Gamma]", 0, "=", 
+   MatrixForm[{{2, 0, 0, 0}, {0, 2, 0, 0}, {0, 0, 2, 0}, {0, 0, 0, 2}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433037668*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"3131676a-34a1-5f49-814c-69883276a6c9"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 0, "*\[Gamma]", 1, "+\[Gamma]", 1, "*\[Gamma]", 0, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984330487194`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"8c1d1ac9-5bb3-c64b-9d87-d2a20fa910cb"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 0, "*\[Gamma]", 2, "+\[Gamma]", 2, "*\[Gamma]", 0, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984330556793`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"b4dc2ceb-3087-1d44-a21f-d8d334535653"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 0, "*\[Gamma]", 3, "+\[Gamma]", 3, "*\[Gamma]", 0, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433064783*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"6adf7de6-d8ba-d747-b568-98335af4eec6"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 1, "*\[Gamma]", 0, "+\[Gamma]", 0, "*\[Gamma]", 1, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433070797*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"2ba63267-ce1f-fb41-9711-9108b697ebe2"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {
+        RowBox[{"-", "2"}], "0", "0", "0"},
+       {"0", 
+        RowBox[{"-", "2"}], "0", "0"},
+       {"0", "0", 
+        RowBox[{"-", "2"}], "0"},
+       {"0", "0", "0", 
+        RowBox[{"-", "2"}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 1, "*\[Gamma]", 1, "+\[Gamma]", 1, "*\[Gamma]", 1, "=", 
+   MatrixForm[{{-2, 0, 0, 0}, {0, -2, 0, 0}, {0, 0, -2, 0}, {0, 0, 0, -2}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984330728016`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"63fb0cdf-573a-3e44-b330-adc8538c5d9f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 1, "*\[Gamma]", 2, "+\[Gamma]", 2, "*\[Gamma]", 1, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984330728016`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"7cbc5813-728a-744f-b9be-50a96f343b10"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 1, "*\[Gamma]", 3, "+\[Gamma]", 3, "*\[Gamma]", 1, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984330844994`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"4efe5f86-8f70-b94f-b35a-c4dac9b539cc"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 2, "*\[Gamma]", 0, "+\[Gamma]", 0, "*\[Gamma]", 2, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984330960407`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"7d364143-c2ff-cd4b-8ca5-baab3fc278d8"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 2, "*\[Gamma]", 1, "+\[Gamma]", 1, "*\[Gamma]", 2, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984331019554`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"3112fece-0944-614b-9581-9f5ccd1dcf5a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {
+        RowBox[{"-", "2"}], "0", "0", "0"},
+       {"0", 
+        RowBox[{"-", "2"}], "0", "0"},
+       {"0", "0", 
+        RowBox[{"-", "2"}], "0"},
+       {"0", "0", "0", 
+        RowBox[{"-", "2"}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 2, "*\[Gamma]", 2, "+\[Gamma]", 2, "*\[Gamma]", 2, "=", 
+   MatrixForm[{{-2, 0, 0, 0}, {0, -2, 0, 0}, {0, 0, -2, 0}, {0, 0, 0, -2}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433104389*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"2e5d8973-fae7-144c-ae5d-25a08a0ba86b"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 2, "*\[Gamma]", 3, "+\[Gamma]", 3, "*\[Gamma]", 2, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433104389*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"7763d420-884f-fb46-b28d-4798d6f40e8c"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 3, "*\[Gamma]", 0, "+\[Gamma]", 0, "*\[Gamma]", 3, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984331160736`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"65fa0969-22e1-f847-950b-318b6e4640de"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 3, "*\[Gamma]", 1, "+\[Gamma]", 1, "*\[Gamma]", 3, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984331241207`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"0107570d-a0e4-f54b-9714-e19ef5f86973"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 3, "*\[Gamma]", 2, "+\[Gamma]", 2, "*\[Gamma]", 3, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984331307583`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"7496e867-2faf-f046-97fe-f1c00636b43b"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"+\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Gamma]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {
+        RowBox[{"-", "2"}], "0", "0", "0"},
+       {"0", 
+        RowBox[{"-", "2"}], "0", "0"},
+       {"0", "0", 
+        RowBox[{"-", "2"}], "0"},
+       {"0", "0", "0", 
+        RowBox[{"-", "2"}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Gamma]", 3, "*\[Gamma]", 3, "+\[Gamma]", 3, "*\[Gamma]", 3, "=", 
+   MatrixForm[{{-2, 0, 0, 0}, {0, -2, 0, 0}, {0, 0, -2, 0}, {0, 0, 0, -2}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984331317616`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"eca0d6fe-47f5-1742-ae84-a5c3a133457b"],
+
+Cell[BoxData["\<\"------------(*\[Omega] \
+matrix*)-------------------------\"\>"], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984331317616`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"925f4c59-5a73-964b-816f-4219e0618ed8"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]0=\[Gamma]0+\[Gamma]3=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {
+        FractionBox["1", "2"], "0", 
+        FractionBox["\[ImaginaryI]", "2"], "0"},
+       {"0", 
+        FractionBox["1", "2"], "0", 
+        RowBox[{"-", 
+         FractionBox["\[ImaginaryI]", "2"]}]},
+       {
+        FractionBox["\[ImaginaryI]", "2"], "0", 
+        RowBox[{"-", 
+         FractionBox["1", "2"]}], "0"},
+       {"0", 
+        RowBox[{"-", 
+         FractionBox["\[ImaginaryI]", "2"]}], "0", 
+        RowBox[{"-", 
+         FractionBox["1", "2"]}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["\[Omega]0=\[Gamma]0+\[Gamma]3=", 
+   MatrixForm[{{
+      Rational[1, 2], 0, 
+      Complex[0, 
+       Rational[1, 2]], 0}, {0, 
+      Rational[1, 2], 0, 
+      Complex[0, 
+       Rational[-1, 2]]}, {
+      Complex[0, 
+       Rational[1, 2]], 0, 
+      Rational[-1, 2], 0}, {0, 
+      Complex[0, 
+       Rational[-1, 2]], 0, 
+      Rational[-1, 2]}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433147396*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"246957f6-999c-a842-80eb-8fe2585c334b"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]1=\[Gamma]1+\[Gamma]1=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "\[ImaginaryI]"},
+       {"0", "0", "\[ImaginaryI]", "0"},
+       {"0", "\[ImaginaryI]", "0", "0"},
+       {"\[ImaginaryI]", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["\[Omega]1=\[Gamma]1+\[Gamma]1=", 
+   MatrixForm[{{0, 0, 0, 
+      Complex[0, 1]}, {0, 0, 
+      Complex[0, 1], 0}, {0, 
+      Complex[0, 1], 0, 0}, {
+      Complex[0, 1], 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433154587*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"d32cbf11-f140-194c-b047-4dc153af34b3"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]2=\[Gamma]2+\[Gamma]2=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "1"},
+       {"0", "0", 
+        RowBox[{"-", "1"}], "0"},
+       {"0", "1", "0", "0"},
+       {
+        RowBox[{"-", "1"}], "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["\[Omega]2=\[Gamma]2+\[Gamma]2=", 
+   MatrixForm[{{0, 0, 0, 1}, {0, 0, -1, 0}, {0, 1, 0, 0}, {-1, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984331606007`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"aa9b7440-b588-e64f-86f6-8ba2cbee32c6"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]3=\[Gamma]3+\[Gamma]0=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {
+        FractionBox["1", "2"], "0", 
+        FractionBox["\[ImaginaryI]", "2"], "0"},
+       {"0", 
+        FractionBox["1", "2"], "0", 
+        RowBox[{"-", 
+         FractionBox["\[ImaginaryI]", "2"]}]},
+       {
+        FractionBox["\[ImaginaryI]", "2"], "0", 
+        RowBox[{"-", 
+         FractionBox["1", "2"]}], "0"},
+       {"0", 
+        RowBox[{"-", 
+         FractionBox["\[ImaginaryI]", "2"]}], "0", 
+        RowBox[{"-", 
+         FractionBox["1", "2"]}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["\[Omega]3=\[Gamma]3+\[Gamma]0=", 
+   MatrixForm[{{
+      Rational[1, 2], 0, 
+      Complex[0, 
+       Rational[1, 2]], 0}, {0, 
+      Rational[1, 2], 0, 
+      Complex[0, 
+       Rational[-1, 2]]}, {
+      Complex[0, 
+       Rational[1, 2]], 0, 
+      Rational[-1, 2], 0}, {0, 
+      Complex[0, 
+       Rational[-1, 2]], 0, 
+      Rational[-1, 2]}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433162607*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"2e69e00d-4b82-044d-b568-208fb0d11b5d"],
+
+Cell[BoxData["\<\"--------------(*Anticommutation relation of \[Omega] \
+matrix*)-----------------------\"\>"], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433167677*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"fea89083-9dc0-3c4d-868f-ffd354c50517"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 0, "*\[Omega]", 0, "+\[Omega]", 0, "*\[Omega]", 0, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433167677*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"1ab50326-6420-7f4d-b869-46b49a0a1c5c"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 0, "*\[Omega]", 1, "+\[Omega]", 1, "*\[Omega]", 0, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984331782856`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"9ac2851a-9371-1445-ab4b-395c61a4cc23"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 0, "*\[Omega]", 2, "+\[Omega]", 2, "*\[Omega]", 0, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984331782856`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"ac5914d1-5de3-bb42-b8fd-59b5394d6fc9"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 0, "*\[Omega]", 3, "+\[Omega]", 3, "*\[Omega]", 0, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433194113*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"725d20b1-3686-8247-9fab-fc399a9b42a1"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 1, "*\[Omega]", 0, "+\[Omega]", 0, "*\[Omega]", 1, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433194113*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"ddbfb386-b719-1049-b231-69794919518a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {
+        RowBox[{"-", "2"}], "0", "0", "0"},
+       {"0", 
+        RowBox[{"-", "2"}], "0", "0"},
+       {"0", "0", 
+        RowBox[{"-", "2"}], "0"},
+       {"0", "0", "0", 
+        RowBox[{"-", "2"}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 1, "*\[Omega]", 1, "+\[Omega]", 1, "*\[Omega]", 1, "=", 
+   MatrixForm[{{-2, 0, 0, 0}, {0, -2, 0, 0}, {0, 0, -2, 0}, {0, 0, 0, -2}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433209753*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"3374d965-defe-d546-a65e-01ecb16f026f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 1, "*\[Omega]", 2, "+\[Omega]", 2, "*\[Omega]", 1, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433209753*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"80d132c7-8daa-a042-940c-73a9b034644e"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 1, "*\[Omega]", 3, "+\[Omega]", 3, "*\[Omega]", 1, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433209753*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"98bd87a7-f6a3-8c46-bb26-01054bf32292"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 2, "*\[Omega]", 0, "+\[Omega]", 0, "*\[Omega]", 2, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433230583*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"e71a853d-5840-b04a-8497-6066b47ae563"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 2, "*\[Omega]", 1, "+\[Omega]", 1, "*\[Omega]", 2, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433230583*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"6c703ddc-a25e-ed41-9f39-91f3eff7f0fb"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {
+        RowBox[{"-", "2"}], "0", "0", "0"},
+       {"0", 
+        RowBox[{"-", "2"}], "0", "0"},
+       {"0", "0", 
+        RowBox[{"-", "2"}], "0"},
+       {"0", "0", "0", 
+        RowBox[{"-", "2"}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 2, "*\[Omega]", 2, "+\[Omega]", 2, "*\[Omega]", 2, "=", 
+   MatrixForm[{{-2, 0, 0, 0}, {0, -2, 0, 0}, {0, 0, -2, 0}, {0, 0, 0, -2}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433241131*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"db820e8e-f2c2-1b42-9410-a2f2c2ac5c49"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 2, "*\[Omega]", 3, "+\[Omega]", 3, "*\[Omega]", 2, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.944798433241131*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"3e59cddd-a799-d946-a8f5-86649d665aee"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "0", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 3, "*\[Omega]", 0, "+\[Omega]", 0, "*\[Omega]", 3, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984332567806`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"df41a9af-bec9-cf40-9825-ce4c671874bd"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 3, "*\[Omega]", 1, "+\[Omega]", 1, "*\[Omega]", 3, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984332567806`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"08a89967-e324-8940-9708-36ccb6cafa6e"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 3, "*\[Omega]", 2, "+\[Omega]", 2, "*\[Omega]", 3, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984332724247`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"c34bd14a-bd9e-b94d-ac30-f28609d6f659"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"+\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"*\[Omega]\"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\"=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"},
+       {"0", "0", "0", "0"}
+      },
+      GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm[
+  "\[Omega]", 3, "*\[Omega]", 3, "+\[Omega]", 3, "*\[Omega]", 3, "=", 
+   MatrixForm[{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984332724247`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"cc04bc67-402e-7340-b425-d8bd9a9496bb"],
+
+Cell[BoxData["\<\"--------------(*Invariant using \[Omega] \
+matrix*)-----------------------\"\>"], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.9447984332724247`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"4a72cb8a-bed4-7a47-9094-8009145c452f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(\[Omega]0*A0+\[Omega]1*A1+\[Omega]2*A2+\[Omega]3*A3)*(\[Omega]\
+0*A0+\[Omega]1*A1+\[Omega]2*A2+\[Omega]3*A3)=\"\>", "\[InvisibleSpace]", 
+   RowBox[{
+    RowBox[{"-", 
+     SuperscriptBox["A1", "2"]}], "-", 
+    SuperscriptBox["A2", "2"]}]}],
+  SequenceForm[
+  "(\[Omega]0*A0+\[Omega]1*A1+\[Omega]2*A2+\[Omega]3*A3)*(\[Omega]0*A0+\
+\[Omega]1*A1+\[Omega]2*A2+\[Omega]3*A3)=", -$CellContext`A1^2 - \
+$CellContext`A2^2],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.944777152100952*^9, 3.9447772026294136`*^9, 
+  3.9447772458200684`*^9, 3.94479843328829*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"fed6b57a-5411-3046-9d03-c8f949f1efd0"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.9105468526359687`*^9},ExpressionUUID->"4ff20d33-fe5e-4e1e-b229-\
+45ca2ffd9ab0"]
+},
+WindowSize->{1061.25, 789.75},
+WindowMargins->{{18, Automatic}, {Automatic, 33.75}},
+PrintingCopies->1,
+PrintingPageRange->{32000, 32000},
+PrintingOptions->{"Magnification"->1.,
+"PaperOrientation"->"Portrait",
+"PaperSize"->{595.2755905511812, 841.8897637795276}},
+FrontEndVersion->"14.1 for Microsoft Windows (64-bit) (July 16, 2024)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"150f30ee-a183-824d-a83c-9041fc349e3a"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 16520, 410, 1664, "Input",ExpressionUUID->"2e19408e-ce9b-485d-a62f-9badac05af10"],
+Cell[CellGroupData[{
+Cell[17124, 436, 311, 6, 22, "Print",ExpressionUUID->"6c23ecb1-8bd7-034a-8631-be05bab6198e"],
+Cell[17438, 444, 1060, 29, 65, "Print",ExpressionUUID->"c9e6920c-2b01-5443-970e-62269bf619ba"],
+Cell[18501, 475, 1134, 31, 65, "Print",ExpressionUUID->"8a40c004-9e01-ff45-bcac-dece631c7e75"],
+Cell[19638, 508, 1060, 29, 65, "Print",ExpressionUUID->"87f723f5-5ef2-cf48-af7e-73a1fb00cad7"],
+Cell[20701, 539, 1184, 33, 65, "Print",ExpressionUUID->"78562240-d520-ab4a-8790-19fff6321df1"],
+Cell[21888, 574, 341, 6, 22, "Print",ExpressionUUID->"b19c1d68-0c5b-bd4f-a3e7-b75e852d390a"],
+Cell[22232, 582, 1343, 32, 65, "Print",ExpressionUUID->"3131676a-34a1-5f49-814c-69883276a6c9"],
+Cell[23578, 616, 1345, 32, 65, "Print",ExpressionUUID->"8c1d1ac9-5bb3-c64b-9d87-d2a20fa910cb"],
+Cell[24926, 650, 1345, 32, 65, "Print",ExpressionUUID->"b4dc2ceb-3087-1d44-a21f-d8d334535653"],
+Cell[26274, 684, 1343, 32, 65, "Print",ExpressionUUID->"6adf7de6-d8ba-d747-b568-98335af4eec6"],
+Cell[27620, 718, 1343, 32, 65, "Print",ExpressionUUID->"2ba63267-ce1f-fb41-9711-9108b697ebe2"],
+Cell[28966, 752, 1445, 36, 65, "Print",ExpressionUUID->"63fb0cdf-573a-3e44-b330-adc8538c5d9f"],
+Cell[30414, 790, 1345, 32, 65, "Print",ExpressionUUID->"7cbc5813-728a-744f-b9be-50a96f343b10"],
+Cell[31762, 824, 1345, 32, 65, "Print",ExpressionUUID->"4efe5f86-8f70-b94f-b35a-c4dac9b539cc"],
+Cell[33110, 858, 1345, 32, 65, "Print",ExpressionUUID->"7d364143-c2ff-cd4b-8ca5-baab3fc278d8"],
+Cell[34458, 892, 1345, 32, 65, "Print",ExpressionUUID->"3112fece-0944-614b-9581-9f5ccd1dcf5a"],
+Cell[35806, 926, 1443, 36, 65, "Print",ExpressionUUID->"2e5d8973-fae7-144c-ae5d-25a08a0ba86b"],
+Cell[37252, 964, 1343, 32, 65, "Print",ExpressionUUID->"7763d420-884f-fb46-b28d-4798d6f40e8c"],
+Cell[38598, 998, 1345, 32, 65, "Print",ExpressionUUID->"65fa0969-22e1-f847-950b-318b6e4640de"],
+Cell[39946, 1032, 1345, 32, 65, "Print",ExpressionUUID->"0107570d-a0e4-f54b-9714-e19ef5f86973"],
+Cell[41294, 1066, 1345, 32, 65, "Print",ExpressionUUID->"7496e867-2faf-f046-97fe-f1c00636b43b"],
+Cell[42642, 1100, 1445, 36, 65, "Print",ExpressionUUID->"eca0d6fe-47f5-1742-ae84-a5c3a133457b"],
+Cell[44090, 1138, 313, 6, 22, "Print",ExpressionUUID->"925f4c59-5a73-964b-816f-4219e0618ed8"],
+Cell[44406, 1146, 1656, 51, 99, "Print",ExpressionUUID->"246957f6-999c-a842-80eb-8fe2585c334b"],
+Cell[46065, 1199, 1172, 31, 65, "Print",ExpressionUUID->"d32cbf11-f140-194c-b047-4dc153af34b3"],
+Cell[47240, 1232, 1100, 29, 65, "Print",ExpressionUUID->"aa9b7440-b588-e64f-86f6-8ba2cbee32c6"],
+Cell[48343, 1263, 1656, 51, 99, "Print",ExpressionUUID->"2e69e00d-4b82-044d-b568-208fb0d11b5d"],
+Cell[50002, 1316, 339, 6, 22, "Print",ExpressionUUID->"fea89083-9dc0-3c4d-868f-ffd354c50517"],
+Cell[50344, 1324, 1343, 32, 65, "Print",ExpressionUUID->"1ab50326-6420-7f4d-b869-46b49a0a1c5c"],
+Cell[51690, 1358, 1345, 32, 65, "Print",ExpressionUUID->"9ac2851a-9371-1445-ab4b-395c61a4cc23"],
+Cell[53038, 1392, 1345, 32, 65, "Print",ExpressionUUID->"ac5914d1-5de3-bb42-b8fd-59b5394d6fc9"],
+Cell[54386, 1426, 1343, 32, 65, "Print",ExpressionUUID->"725d20b1-3686-8247-9fab-fc399a9b42a1"],
+Cell[55732, 1460, 1343, 32, 65, "Print",ExpressionUUID->"ddbfb386-b719-1049-b231-69794919518a"],
+Cell[57078, 1494, 1443, 36, 65, "Print",ExpressionUUID->"3374d965-defe-d546-a65e-01ecb16f026f"],
+Cell[58524, 1532, 1343, 32, 65, "Print",ExpressionUUID->"80d132c7-8daa-a042-940c-73a9b034644e"],
+Cell[59870, 1566, 1343, 32, 65, "Print",ExpressionUUID->"98bd87a7-f6a3-8c46-bb26-01054bf32292"],
+Cell[61216, 1600, 1343, 32, 65, "Print",ExpressionUUID->"e71a853d-5840-b04a-8497-6066b47ae563"],
+Cell[62562, 1634, 1343, 32, 65, "Print",ExpressionUUID->"6c703ddc-a25e-ed41-9f39-91f3eff7f0fb"],
+Cell[63908, 1668, 1443, 36, 65, "Print",ExpressionUUID->"db820e8e-f2c2-1b42-9410-a2f2c2ac5c49"],
+Cell[65354, 1706, 1343, 32, 65, "Print",ExpressionUUID->"3e59cddd-a799-d946-a8f5-86649d665aee"],
+Cell[66700, 1740, 1345, 32, 65, "Print",ExpressionUUID->"df41a9af-bec9-cf40-9825-ce4c671874bd"],
+Cell[68048, 1774, 1345, 32, 65, "Print",ExpressionUUID->"08a89967-e324-8940-9708-36ccb6cafa6e"],
+Cell[69396, 1808, 1345, 32, 65, "Print",ExpressionUUID->"c34bd14a-bd9e-b94d-ac30-f28609d6f659"],
+Cell[70744, 1842, 1345, 32, 65, "Print",ExpressionUUID->"cc04bc67-402e-7340-b425-d8bd9a9496bb"],
+Cell[72092, 1876, 329, 6, 22, "Print",ExpressionUUID->"4a72cb8a-bed4-7a47-9094-8009145c452f"],
+Cell[72424, 1884, 715, 17, 22, "Print",ExpressionUUID->"fed6b57a-5411-3046-9d03-c8f949f1efd0"]
+}, Open  ]]
+}, Open  ]],
+Cell[73166, 1905, 149, 3, 47, "Input",ExpressionUUID->"4ff20d33-fe5e-4e1e-b229-45ca2ffd9ab0"]
+}
+]
+*)
+
